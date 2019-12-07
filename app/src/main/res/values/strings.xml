@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GYM FITNEES</string>
+    <string name="correo">Correo</string>
+    <string name="iniciar_sesion">Iniciar sesion</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="clave">Clave</string>
+    <string name="estatura">Estatura</string>
+    <string name="fecha_nac">Fecha Nac.</string>
+    <string name="apellido">Apellido</string>
+    <string name="nombre">Nombre</string>
+    <string name="nombre_usuario">Nombre Usuario</string>
+</resources>
