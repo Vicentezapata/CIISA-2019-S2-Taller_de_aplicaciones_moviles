@@ -10,4 +10,8 @@
     <string name="apellido">Apellido</string>
     <string name="nombre">Nombre</string>
     <string name="nombre_usuario">Nombre Usuario</string>
+    <string name="fecha">Fecha</string>
+    <string name="peso">Peso</string>
+    <string name="a_adir">AÑADIR</string>
+    <string name="imc">IMC</string>
 </resources>

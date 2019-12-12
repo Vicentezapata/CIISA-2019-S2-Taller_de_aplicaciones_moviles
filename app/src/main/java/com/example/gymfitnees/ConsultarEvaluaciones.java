@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,26 +20,55 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class ConsultarEvaluaciones extends AppCompatActivity {
-    TextInputLayout tilFecha,tilPeso;
+    TextInputLayout tilFecha,tilPeso,tilEst,tilImc;
     Button btnAniadirReg;
     ListView lvDatos;
     String [] datos;
+    String estaturaUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_consultar_evaluaciones);
 
-        String nomUser = getIntent().getStringExtra("nombreUsuario");
+        estaturaUser = getIntent().getStringExtra("estaturaUser");
 
+        //REFERENCIAS
         tilFecha = findViewById(R.id.tilFechaCon);
         tilPeso = findViewById(R.id.tilPesoCon);
+        tilEst = findViewById(R.id.tilEstCon);
+        tilImc = findViewById(R.id.tilImcCon);
         btnAniadirReg = findViewById(R.id.btnAniadirReg);
         lvDatos = findViewById(R.id.lvDatos);
 
+        //SET DATOS
+        tilEst.getEditText().setText(estaturaUser);
+
+
+        tilPeso.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Toast.makeText(ConsultarEvaluaciones.this, s, Toast.LENGTH_SHORT).show();
+                Calculos calculo = new Calculos();
+                Double Imc = calculo.calcularIMC(estaturaUser,s.toString());
+                tilImc.getEditText().setText(Imc.toString());
+            }
+        });
         datos =  listar();
         ArrayAdapter<String> adapter;
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,datos);
         lvDatos.setAdapter(adapter);
+
+
 
         btnAniadirReg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +78,7 @@ public class ConsultarEvaluaciones extends AppCompatActivity {
                 insertarRegistro(imc,fecha,1);
                 datos =  listar();
                 ArrayAdapter<String> adapter;
-                adapter = new ArrayAdapter<String>(v.getContext(),android.R.layout.simple_list_item_1,datos);
+                adapter = new ArrayAdapter<String>(v.getContext(),android.R.layout.simple_list_item_2,datos);
                 lvDatos.setAdapter(adapter);
 
             }

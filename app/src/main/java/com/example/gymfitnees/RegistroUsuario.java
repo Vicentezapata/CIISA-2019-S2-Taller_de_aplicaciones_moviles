@@ -3,6 +3,8 @@ package com.example.gymfitnees;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -37,13 +39,13 @@ public class RegistroUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 nomUser = tilNomUser.getEditText().getText().toString();
-                nombre = tilNomUser.getEditText().getText().toString();
-                apellido = tilNomUser.getEditText().getText().toString();
-                fchNac = tilNomUser.getEditText().getText().toString();
-                estatura = tilNomUser.getEditText().getText().toString();
-                clave = tilNomUser.getEditText().getText().toString();
+                nombre = tilNombre.getEditText().getText().toString();
+                apellido = tilApellido.getEditText().getText().toString();
+                fchNac = tilFchNac.getEditText().getText().toString();
+                estatura = tilEstat.getEditText().getText().toString();
+                clave = tilClave.getEditText().getText().toString();
                 if (nomUser.length()>0 && nombre.length()>0 && apellido.length()>0 && fchNac.length()>0  && estatura.length()>0  && clave.length()>0 ){
-                    Toast.makeText(v.getContext(),"USUARIO CREADO EXISTOSAMENTE", Toast.LENGTH_SHORT).show();
+                    insertarUsuario(nomUser,nombre,apellido,fchNac,estatura,clave);
                 }
                 if (nomUser.length()==0){
                     tilNomUser.setError("NOMBRE REQUERIDO");
@@ -83,5 +85,28 @@ public class RegistroUsuario extends AppCompatActivity {
             }
         });
 
+
+
+
+    }
+    public void insertarUsuario(String nomUser, String nombre, String apellido, String fechNac, String estatura, String clave ) {
+        DBhelper dBhelper = new DBhelper(this, "gymFitness_desa", null,1);
+        SQLiteDatabase db = dBhelper.getWritableDatabase();
+        if(db != null){
+            ContentValues contentValues =new ContentValues();
+            contentValues.put("nomUser",nomUser);
+            contentValues.put("nombre",nombre);
+            contentValues.put("apellido",apellido);
+            contentValues.put("fechNac",fechNac);
+            contentValues.put("estatura",estatura);
+            contentValues.put("clave",clave);
+            long nFila = db.insert("tbl_usuarios",null,contentValues);
+            if(nFila>0){
+                Toast.makeText(this, "Usuario registrado exitosamente ", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(this, "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
